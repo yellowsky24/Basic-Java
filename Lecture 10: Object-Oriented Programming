@@ -1,0 +1,45 @@
+1. Interface안의 variables
+ex) Interface Motion{
+    int North;
+    int East;
+}
+->이럴 경우 자동으로 variables들은 public static final 이 된다. 다시말해서 이 값들은 바뀌지 않는다. 
+
+2. Interface안의 methods들: 저번 시간에 interface안의 default method는 public abstract method들이다. 같이 다루었으면 좋았겠지만 여기서 다시 inteface method들에 대해서 다룬다. 
+Java 8이전까지는 interface안의 method들은 모두 abstract method였다. 하지만 Java 8/9부터는 세로운 세가지 method들이 추가 되었다. 1. static method 2. default method 3. private method
+
+  1. static method: abstract method가 아니기에 interface 안에서 implementation을 한다. 주로 factory method로 사용하는데, factory method란, instance를 생성하고 return해주는 함수를
+  말한다. ex) static IntSequence digitsOf(int n)        이렇게 factory method는 interface안에서 static method로 구현된다. digitsOf함수를 호출하면 DigitSequence를 얻을 수 있다. 
+                return new DigitSequence(n);
+      
+  2. default method: 해당 interface를 implements하는 모든 class가 동일한 interface안의 함수를 사용할때 이를 default로 선언하면 모든 class는 이 함수를 사용한다. 그리고 당연히 구현을 해야 한다.
+  따라서 interface method에 default로 선언되어있다면 class에서는 이를 구현할 필요가 없으므로 overriding하거나 구현을 하지 않는다. 그렇다면 왜 default이 필요한가? 이런 상황을 가정하자.
+  Interface IntSequence가 있고 IntSequence는 두가지 method가 있었다. next, hasNext. 그리고 많은 class에서 이 interface를 implements하였고 이 두 method를 구현하였다. 하지만 interface에서
+  새로운 f()함수를 정의하였다고 가정하자. 그러면 IntSequence를 구현한 모든 클래스에서 이 f함수를 구현해야 한다. 따라서 만약에 f함수를 default함수로 구현하면 새로운 interface method를 구현할 
+  필요가 없다. 하지만 default method는 문제점을 가지고 있다. 가) class가 복수의 interface를 구현할때 나) 각각의 interface에서 동일한 이름과 둘중 하나라도 default method로 선언할때 
+  다)class에서 이 default method를 override하지 않을때, 이 세가지 조건이 만족했을때 class에서 해당 default method를 호출했을때 문제가 생긴다. 왜냐하면 두개의 default method중에서 어느것을
+  지칭하는지 모르기 때문이다.
+  
+  ex) interface Person{                 interface Identified{                     Class Employees implements Person, Identifeid{
+      default int getID(){return 1;}          default int getID(){return 0;}              private String name;
+  }                                     }                                           }                                     
+  다음과 같은 경우 Employees e=new Employees(); e.getID(); 했을때 getID는 누구의 getID인가? 만약에 둘중 하나가 default여도 에러가 생긴다. 왜냐하면 하나의 getID는 default이므로 구현하지 
+  않아도 된다하고 한쪽에서는 default가 아니라 abstract이기에 getID를 구현하라고 한다. 따라서 ambiguity가 발생하므로 compile 에러가 발생한다. 
+  
+  이런 문제들은 Employees에 getID를 overriding하면 문제 되지 않는다. 왜냐하면 Employees의 getID를 호출하기 때문이다. 또한 당연히 파라미터가 다르면 다른 함수니깐 해결된다. 
+  
+  3. Private Method: private method을 하면 abstract일 수 없다. private method이면 interface안에서만 사용된다. 따라서 interface를 implements하는 class에서는 해당 private method를 
+  사용할 수 없다. private static method와 private method의 차이점은, static method는 오로지 static method만 호출할 수 있고 non static method는 static, non-static method둘다 
+  호출할 수 있다. 
+  
+  여기까지가 interface을 통한 Abstraction이다. 
+  Inheritance
+  1. extends을 통해 상속받는다. 
+  2. Method overriding: SuperClass에서 구현된 method를 subclass에서 구현한다면 이를 Method overriding이라고 한다. 
+        a) @Override annotation은 만약에 사용자가 Override한다고 표시한다는 뜻인데, 만약에 해당 함수가 overriding하지 않으면 compile 에러를 출력한다. 
+        b) method overridng을 위해서는 같은 이름의 함수, 같은 파리미터면 된다.  다시말해서 return type은 같지 않아도 된다! 왜냐하면 complier은 return type은 신경쓰지 않는다. 따라서 
+        같은 이름, 같은 파라미터를 가지고 다른 리턴 타입을 가지면 해당 함수는 overriding이 맞다. 
+        c) subclass의 method는 Superclass의 method보다 더 작은 accessiblity를 가질 수 없다. 예로들면 superclass에서 public 으로 선언한 함수를 subclass에서 protected으로 선언했다면
+        compile error가 발생한다. 왜냐하면 accessiblity가 줄어들었기 때문이다. 왜냐하면 
+  
+  
