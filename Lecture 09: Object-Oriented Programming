@@ -1,0 +1,58 @@
+Four principles of object oriented programming
+ 1. Encapsulation: hide internal implementation by restricting access to public methods
+ 2. Abstraction: use of "interface", a specification without implementation-only have header
+ 3. Inheritance: reuse the code of existing super classes-super class&child class
+ 4. Polymorphism: one name can have many different forms. 
+  -method overloading(static polymorphsim): 함수의 파라미터만 다른 것
+  -method overriding(dynamic polymorphism): super class에 정의한 것을 sub class에서 재정의한다. 
+  
+이번 시간에는 Interface에 대해 다룰것이다. 
+1. SimpleSequence
+2. SquareSequence
+3. DigitSequence 
+class마다 각 method를 구현하는 것 보단 interface를 사용하는 것이 효율적이다. 
+
+1. Inteface이란?? Interface is a way to achieve abstraction. we define an interface, which includes a group of methods
+                  But interface only has specifications but does not have actual implementation !!
+                  ->이것이 interface의 핵심이다. 
+
+2. interface의 specifications의 특징. 
+   1. All methods specified in an interface are public by default
+    -> interface안의 methods들은 dafult로 public method이다. 
+   2. Interface안에 있는 implmentation이 없는 method들은 abstract keyword를 default로 가진다. 
+    ex) public abstract int next(); <=> int next();
+   3. interface를 구현하기 위해서는 interface안의 모든 methods를 구현해야 한다. 
+
+3. Interface의 예: 
+public static double average(IntSequence seq, int n);
+->SquareSequence square=new SquareSequence();
+double avg=average(square,100) 따라서 average안의 파라미터는 IntSeqeuence였는데, SquareSequence가 IntSequence를 implements했으므로 이를 사용할 수 있다. 
+똑같이 SimpleSquence가 IntSequence를 implements했다면 동일한 average함수에 사용할 수 있다. 
+
+4. Interface의 Supertype, Subtype과 Object 생성
+IntSequence is a supertype of DigitSequence
+DigitSequence is a subtype of IntSequence
+
+일반적으로 subtype의 Object를 할당하는 방법은 DigitSequence digits= new DigitSequence(); 이다. 하지만 IntSequence digits= new DIgitSequence()를 할 수 있다. 
+즉 SuperType variable에 subtype object를 할당할 수 있다. Interface에서 중요한 점은, Interface는 specifications이 없기에 Interface object를 생성할 수 없다.
+
+또한 만약에 subtype variables을 supertype variables에 할당하고 싶다면 casting이 필요하다. 하지만 casting이 되는 경우는 실제 casting되는 변수가 cast하는 변수와 일치해야 한다.
+예로들면 IntSequence sequence = new DigitSequence(2345);
+        DigitSequence digits= (DigitSequence)sequence; ->가능
+하지만, IntSequence sequence = new SquareSequence();
+       DigitSequence digits=(DigitSequence)sequence;->불가능(error 발생)
+        Sequence와 DigitSquence가 동일한 object를 가지고 있어야 한다. 
+        
+ 5. instanceof: 정리하자면 subtype variable에 supertype variable을 할당하고 싶다면 casting을 해야하는데 그러기위해서는 supertype variable이 object는 casting되는 type과 동일해야 한다. 
+ 따라서 type casting을 하기전에 체크를 해야한다. 이것이 내가 casting하는 type과 동일한 type을 할당 받았는가??? => instanceof를 사용한다. 하지만 문제가 있다. 
+ instanceof는 variable와 object의 type을 리턴한다. 예로들면, IntSequence sequence= new DigitSequence(); sequence instanceof IntSequence을 하면 참이 된다. 따라서 
+ 다음과 같은 코드에서 에러가 발생한다. 
+ IntSequence sequence= new DigitSequence(2143);
+ if(sequence instanceof IntSequence) //True이므로 통과한다. 
+  DigitSequence digits=(DigitSequence)sequence; //하지만 sequence는 DigitSequence이므로 에러(ClassCastException)가 발생한다. 따라서 체크를 할때, IntSequence가 아니라
+  DigitSequence로 체크해야 한다. 
+ 
+ 6.interface의 interface: interface는 interface를 implements할 수 있다. 하지만 중요한 점은 interface는 다른 interface를 implementation을 하지 않아도 된다. 예로들면
+ inteface Channel이 interface Closeable을 implements한다면, channel을 implments하는 class는 두 interface의 methods를 implements해야 한다. 
+  
+           
