@@ -1,0 +1,39 @@
+저번 시간에 배운 모든 class의 super class인 Object class의 method에 대해서 계속해서 알아보자. 
+2. equals: checks whether two objects are the same. class마다 equal의 의미가 다르므로 overriden 된다. equals을 override할때 다음과 같은 4가지를 고려해야 한다. 
+  public boolean equals(Object otherObject)
+  a) if(this==otherObject) return true; ->두개의 objects가 같은지 체크한다. 같으면 true를 리턴한다. 
+  b) if(otherObject==null) return false; ->otherObject가 null인지 체크한다. null이면 false를 리턴한다.
+  c) if(getClass() != otherObject.getClass()) return false; ->same class인지 체크한다. 다른 class이면 false이다. 
+  d) Employee other=(Employee)otherObject; ->type casting을 해야 한다. 
+  
+  이제 return을 작성하는데 중요한 점은 ==의 사용이다. 특히 string 의 '=='을 유의해야 한다. 왜냐하면 Employee e1=new Employee("John", 1000); 와
+  Employee e2=new Employee(new String(John), 1000); 에서 둘이 equals을 구현하면 false가 나온다. 앞에서 배운 내용을 복습해야겠다. 다 까먹었구만...따라서 우리가 원하는 것은 String을 
+  비교하고 싶으므로 equals을 사용하여 비교한다. 정리하자면, string에서의 '=='의 사용을 조심해야 한다. 
+  
+3. hashCode: object에서 계산되어서 integer value를 리턴한다. 만약에 다른 object라면 높은 확률로 다른 hashCode를 생성한다. 높은 확률인 것은 Object는 무한하지만, hashcode는 유한하기 때문이다.
+중요한 점은 equals를 override했다면 hashCode 또한 override해야 한다. 왜냐하면 equals가 true를 리턴하면 둘의 hashCode는 동일하고 equals가 false를 리턴하면 hashCode가 달라야 한다. 예로들면, 
+String은 equals을 override했기에 hashcode또한 override하였다. 
+
+이제 File output 에 다룰 것이다.
+1. FileOutputStream의 사용법: 
+  0) IOException을 throw해야 한다. 
+  a) FileOutputStream의 object를 생성해야 한다. Object의 argument으로 경로를 포함한 파일의 이름이 들어가야 한다. ex) FileOuputStream output= new FileOutputStream("abc.txt"); 
+  b) FileOutputStream의 instance method인 write을 호출한다. 중요한 점은 write의 argument는 String이 아니라 bytes이다. ex) output.write(bytes): bytes는 byte배열이다. 
+  c) Close한다. ex) ouptut.close();
+
+-> FileOutputStream의 단점인 String을 bytes array를 바꿔야하는 작업이 효율적이지 않기 때문에 다른 입출력 strea을 사용한다. 
+
+2. FileWriter/PrintWriter : FileOutputStream와 똑같고 String도 바꾸지 않아도 된다. 
+
+3. Write모드와 Append모드: Write는 만약 기존 파일이 존재한다면, 해당 내용이 지워진 후에 내용이 쓰인다. 하지만 Append는 기존의 내용에 추가한다. Append모드를 사용하기 위해선 앞에서 배운
+FileWriter에서 두번째 argument에 true로 지정한다. ex)new FileWriter("out.txt,true)/new PrintWriter(new FileWriter("out.txt", true)); : PrintWriter은 append를 위한 argument가 없으므로
+FileWriter을 생성한뒤 이를 PrintWriter의 argument로 넘겨주면 된다. 
+
+이제 File Input에 다루자. 
+1. FileInputStream: FileOutputStream과 동일하게 argument로 byte array를 받는다. 중요한 점은 1024bytes까지만 읽는다는 점이다. 따라서 파일에 1024bytes보다 작으면 파일 크기만큼 읽고 1024 bytes
+보다 커도 1024bytes까지만 읽는다. 또한 이러한 file input에선 file descriptor가 있어서 다시 read를 수행하면 처음부터 읽는 것이 아니라 읽은 곳부터 다시 읽는다. 또 중요한 점은 read의 return 
+value는 읽은 bytes수이다. 만약에 EOF(더이상 읽을 수 없으면) 도달했으면 -1를 리턴한다. 이를 이용해서 파일에 끝까지 읽는 작업을 수행하는데, 문제는 buffer에 읽었던 것이 같이 출력한다. 예로들면 
+23개 bytes를 읽긴했는데 문제는 나머지 크기는 이전에 저장한 bytes가 출력된다. 따라서 substring을 이용해서 읽은데까지만 출력한다. 
+
+2. FileReader/ BufferedReader: Input또한 편한 라이브러리들이 있다. FileReader와 BufferedReader을 같이 사용하는데, FileReader은 Byte array가 아닌 String을 읽어오고 BufferReader은 
+ReadLine함수를 통해 한줄씩 읽어온다. 자세한 구현 방법은 Programming Lab을 참고하자. 
