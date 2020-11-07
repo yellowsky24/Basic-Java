@@ -1,0 +1,35 @@
+1. Generic Programming: reusing the same code for various types of objects : instance variable을 여러 type으로 사용할 수 있는 코드를 정의한다. 
+  a) instance variable로 모든 Class의 super class인 Object를 사용한다. 
+  b) Object에 여러 class가 적힐 수 있으므로 instance variable이 무엇을 가리키는지 확인해야 한다. -> instanceof로 체크해야 한다. 
+  c) instance variable을 할당할때 반드시 type casting을 해야 한다. 
+
+2. Generic Class
+이런 방법이 복잡하기 때문에 Generic Class를 사용한다. Generic Class는 class Box <T>{}이렇게 사용한다. 여기서 T를 type variable이라고 한다. 따라서 Box를 선언하고 Object를 할당할때 
+이 T를 specify한다. 이렇게 되면 instance variable이 무슨 type인지 체크하지 않아도 되고 type casting 또한 필요하지 않는다. 
+
+-Generic class를 작성할때 multiple type variables을 사용해도 된다. 참고로 compiler가 type variables이 뭔지 명시적으로 안다면 이를 생략해도 된다. 
+3. Terms ex) class Box<T>-> Box<String> abc= new Box<String>(); 
+  a) Box<T>: Generic Class
+  b) T: a type variable
+  c) Box: a raw type
+  d) String: a parameterized type
+
+4. Limitations
+  a) type variable T를 static으로 선언할 수 없다. 즉, static T item; 이렇게 선언할 수 없다. 왜냐하면 static variable은 여러 instance에서 사용할 수 있으므로 한가지 type으로 한정할 수 없다. 
+  b) new를 이용해서 T에 대한 array를 사용할 수 없다. 즉 예로들면, T[] arr= new T[10]; 을 할 수 없다. 하지만 T[] itemlist처럼은 사용할 수 있다. 또한 마찬가지 이유로 instance of 를 사용할 
+  수 없다. 
+  Compile time때 <T>가 제거되고 Object로 바뀐다. 이 Limitations 부분이 잘 이해가지 않는다. 
+
+5. Example1
+    a) ArrayList<T> list= new ArrayList<T>(); ->이건 가능하다. T a= new T();을 하지 못하지 이건 가능하다.
+    b) instance를 생성할때, parameterized type은 constructor의 type과 무조건 동일해야 한다. parameterized type이 super class여도 
+    c) 당연히 superclass variable에 subclass object를 할당할 수 있다. 
+6. Limiting Types: 
+그냥 놔두면 당연히 Object에 아래에 있는 모든 클래스 들이 들어갈 수 있다. 하지만 우리는 그것은 원하지 않는다. 즉, <T>에 들어갈 수 있는 parameterized variable을 제한한다. 
+<T extends Fruit>처럼 사용하면 Fruit의 subclass에 있는 class들만 parameterized variable이 될 수 있다. 또한 우리는 특정한 interface 를 implements한 classem들만 <T>에 들어갈 수 있게 한다. 
+<T extends interfaces>처럼 사용하면 interfaces를 class들만 parameterized variable이 될 수 있다. 여기서 중요한 것은 implements가 아니라 extends이다. 
+
+    
+    
+    
+    
