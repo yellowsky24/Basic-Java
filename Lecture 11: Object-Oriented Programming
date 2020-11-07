@@ -1,0 +1,55 @@
+오늘도 역시 Inheritance에 다룰 것이다. 
+1. Creating a subclass
+-Subclass의 constructor가 superclass의 constructor을 호출한다. 당연히 subclass의 constructor가 없으면 default constructor이고 default constructor은 한가지 일만 수행한다. 바로 
+super class의 constructor만 호출한다. 만약에 default가 아니라 constructor가 존재하면 superclass의 constructor은 subclass의 constructor이 시작할때 호출된다. 따라서 수행순서는 
+superclass constructor->subclass constructor가 된다. 중요한점은 subclass의 construcotr에서는 무조건 superclass의 constructor가 먼저 수행된다(첫줄에 수행된다). 
+
+-여기서 또 중요한 점은 subclass constructor에서 superclass의 constructor을 explicit하게(super();)호출할 수 있다. 당연히 이렇게 explicit하게 호출하기 위해서는 subclass의 constructor의 
+첫번째 줄이어야 한다. 하지만 여기서 젤 중요한 점은 바로 만약에 superclass의 constructor가 parameter가 있다면 implicit하게 호출이 되지 않는다. 따라서 Superclass의 constructor가 parameter가
+있다면 subclass의 constructor에서 반드시 explicit하게 호출해야 한다. 왜냐하면 superclass의 constructor을  implicit하게 호출한다는 뜻은 no argument인 superclass constructor을 호출한다는 
+뜻이기 때문이다. 
+
+-detour: Implicit constructor: 지금까지는 argument가 없는 constructor은 아무런 action이 없다고 알고 있었지만 이제 한가지 action을 하는것을 알 수 있다. 바로 superclass의 constructor을 호출
+한다는 것이다. if any constructor is defined, the implicit constructor is no longer exists.  
+
+2. Dynamic method look up: Method overriding되는 method가 있을때, 해당 method는 object의 method이 수행된다. 
+만약에 super class variable에 subclass object를 할당하고, 그리고 method overriding되는 method를 수행한다면 어느 class의 method가 호출될까?? 바로 subclass의
+method가 호출된다!!!이건 중요하다. 왜냐하면 나는 variable의 type이 중요하다고 생각했다. 왜냐하면 Lecture10에서 Ex10-02에서 parameter에서는 variable이라고 했기 때문이다.정리하자면 이렇게 생각
+하면 될거같다. type은 super class이지만 subclass의 method를 가진다고 봐야겠다..그러니깐 Dynamic method look up이라는 것은 JVM이 object's class을 확인하고 해당 method를 호출하는 것을 
+말한다. 그러면 왜 Dynamic Method look up을 할까? superclass의 array를 만들어서 다양한 subclass object를 할당하여 각 subclass object의 method를 수행하기 위해서이다. 
+
+-하지만 여기서 또 중요한 점!!만약에 method overriding이 되지 않는다면??그것은 dynmaic method look up이 되지 않는다. 왜냐하면 JVM은 처음에 variable의 method를 확인하고 그다음에 object의
+method를 확인하여 method overriding되기 때문에 variable에 method가 없으면 compile error가 발생한다. 따라서 이를 해결하기 위해선 1. method overriding 2. Casting을 통해서 해결한다. 
+Casting 을 다뤄보자면 casting에서는 if(empl instanceof Manager){     이렇게 casting을 수행하면 Manager의 method를 수행할수 있다. 
+                                      Mangager mgr=(Manager) empl;
+                                      mgr.setBonus(20000);
+                                   }
+                                   
+3. Final method/class: final variable은 예전에 배웠듯이 assignment이 되지 않은 variable이다. 동일하게 final method이라는 뜻은 해당 method는 overriding이 불가하다는 뜻이다. 유사하게 
+final class이라는 것은 이 class를 inherits할 수 없다는 뜻이다. 예로들면, string은 final이다. 
+
+4. Abstraction Method, class: interface와 유사하게 implementation없이 method를 정의할 수 있다. 이를 abstract method라고 부르며, keyword "abstract"를 추가해야 한다. 만약에 class가 
+abstract method를 가지고 있다면 class에다가도 "abstract"를 붙어야 한다. 따라서 만약에 이 abstract class를 inherits하는 subclass는 abstract method를 implements하던지 아니면 자신도 
+abstract class가 되든지 해야 한다. 
+
+->그렇다면 당연히 interface와 abstract class의 차이점은 무엇인지 궁금하다. interface는 instance variabale과 constructor를 가질 수 없다. 따라서 interface는 그냥 단순히 구현하지 않은
+함수의 집합이라고 생각하면 된다. 
+
+-주의할점은 당연히 abstract class의 object(instance)를 생성할 수 없다. 무조건 외우자!! abstract class의 instance는 생성될 수 없다. 
+
+5. Protected Access: variable or the method can be accessed from subclasses.  또한 중요한 점은 동일한 package에 있는 다른 class가 access할 수 있다. 또한 다른 package에 있지만 subclass
+이라면, accss할 수 있다. 정리하자면 같은 package에서는 모든 class가 access할 수 있고 다른 package에서는 subclass만 access할 수 있다. 
+
+6. Superclassand Interface. : A class can implement multiple interface/ But!!! A class can't extends multiple classes/ A class can extends a class and implemetns an interface. 
+하지만 만약 이런 경우 어떤 method가 호출되는가???
+interface Named{                              abstract class Person{                            class Student extends Person implements Named{
+  default String getName(){return "NoName";}        public String getName(){return "YesName"};          public int getId{return 1;}
+}                                                   public abstract int getId;                    }
+                                               }                                                      
+            Student s=new Student();
+            System.out.println(s.getName());
+            여기서 getName은 interface의 default method혹은 superclass의 getName이 호출되는가??
+ ->super class가 interface보다 priority가 높다. 
+ 
+7. class Object: superclass of all classes: 사실상 모든 class는 Object class를 inherits하고 있다. 따라서 이렇기 때문에 Object에 있는 method를 overriding할 수 있다. 
+  a) toString: returns a string reprsentation of the object. 신기한점은 object를 print하려면 toString을 수행한 결과가 print된다. 
