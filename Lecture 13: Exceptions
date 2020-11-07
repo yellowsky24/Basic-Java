@@ -1,0 +1,37 @@
+이번 시간에는 Exceptions에 대해 다룰것이다. 
+1. Errors in programs: 다른 에러들은 compile전에 handle 할 수 있지만 Run-Time Error인 경우에는 해결할 수 없다. 
+2. Run-Time Errors : Run-Time Errors은 errors와 exceptions으로 나눌수 있다. 
+  a) errors인 경우에는 멈춰야 하는 경우. ex) out of memory, stack overflow
+  b) exceptions인 경우에는 pgr가 handle한다면 해결할 수 있다. ex) class cast Exception, arithmetic exception, null pointer exception, index-out-of-bound exceptions
+
+3. Errors의 class hierarchy
+    Object---Throwable----Errors
+                      |
+                      -----Exception-------Other Exceptions
+                                    |
+                                    --------RuntimeExeptions
+                                    
+     RunTImeExceptions와 Other Exceptions의 차이점은 RunTImeExecptions은 programmer가 실수한 경우이다. 
+
+4. Exception-handling: try-catch
+try block을 수행하고 catch에는 발생 가능성있는 Exception을 적어주면 만약에 try를 하는 중에 해당 Exception이 발생하면 해당 부분을 수행한다. 중요한 것은 try 중간에 exception이 발생하면
+try 중간까지 수행하고 exception을 수행한다. 따라서 예로들면 print하고 exception이 발생하면 print는 수행이 된다.
+
+여러개의 catch문이 있을시 앞에서 catch문이 적용되면 뒤에 있는 catch문은 수행되지 않고 try catch문을 빠져 나온다. 따라서 여러개 catch문이 있으면 그중 하나만 수행이 된다. 
+
+Debugging을 위해서 두가지 method을 사용하는데, 1. printStackTrace(): exception이 발생할때, call stack에 있던 method이 수행된다. 2. getMessage(): exception의 메시지가 출려된다. 
+즉, 어떤 종류의 exception이 발생했는지 알 수 있다. 
+
+5. Throw: 종종 programmer가 Exception을 발생시키고 싶을 때가 있다. 그럴때는 Exception e= new Exception("Exception!");라고 선언한뒤, throw e라고 하면 exception e가 발생한다. 
+
+6. Mandatory and Optional Exception Handling: 모든 Exceptions중에서 RunTime Exceptions이 아닌 것들을 checked Exceptions이라고 하고 RunTime Exceptions을 Unchecked Exceptions이라고 한다.
+Checked Exceptions은 반드시 handling 해야 한다 => Mandatory Handling / Unchecked Exceptions => 반드시 handling하지 않아도 된다.  
+
+7. Exception-handling: Method throw exceptions: method throws Exception1{}: Exception1이 해당 method에서 발생할 수 있다는 뜻이다. 이 말은 다시말해서 이 method를 호출한 함수가 해당
+exception을 handle해야 한다는 뜻이다. 만약 method1 throws Exception1{} method2 throws Exception2{}이고 main이 method1와 method2를 호출한다면 main이 Exception1과 Exception2를 handle
+한다는 뜻이다. main은 Exception1,2를 handle하거나 main throws Exception1, Exception2{}을 해야한다. 후자를 택하면 사실상 이를 handle하지 않는다는 뜻이므로 errors가 발생할 수 있다. 
+이전에서 다룬 fileoutputstream의 exception인 filenotfoundexception이 발생할 수 있다. 그렇다면 해당 method가 어떤 exception을 발생시키는지 어떻게 아는가??메소드의 document에 써있다. 
+Public FileOutputStream(string name) throws FileNotFoundException라고 나와있다.즉, FileOutputStream은 FileNotFoundException을 throw한다는 뜻이다. 
+
+8. finally block: Exception이 발생했든 안했든 반.드.시 수행되는 block이다. 이는 try문에서 return을 하여도 동일하다. 한마디로 어떤 일이 있든 반드시 수행된다는 뜻이다. 
+
