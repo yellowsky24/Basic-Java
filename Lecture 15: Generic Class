@@ -1,0 +1,31 @@
+1. Generic classes: cases
+  -Generic class는 non generic class를 extend(inherits)할 수 있다. 
+  -Generic class는 Generic class를 extend할 수 있지만 몇가지 제약 사항이 있다. 
+    a) 동일한 Type parameter ex)<T> 를 사용하거나 type parameter을 limit하는 type parameter을 사용한다. ex) <T extends Fruit> 
+    b) 따라서 a)번에 의해서 superclass에서 type parameter를 limit하고 있다면, subclass에서 또한 type parameter를 limit해야 한다.
+    
+2. Generic classes: wildcard
+  -Parameter가 generic class일때 예로들면 FruitBox<Fruit>일때 actual parameter로 FruitBox<Apple>이 될 수 없다. 이 부분이 어려운게 원래 non generic class에서는 subclass가 actual parameter
+  가 될 수 있는데 generic class에선 아예 type parameter가 동일해야 한다. 
+  -그렇다면 두개의 generic class를 parameter로 하는 예로들면 A(FruitBox<Fruit>)와 A(FruitBox<Apple>)을 만들면 어떨까 생각했지만 이는 compile error이다. 
+  
+  따라서 정리하자면 generic class를 parameter로 사용할때, 여러 type variable을 사용하고 싶을때, wildcard를 사용한다.  ex) <? extends Fruit>-> 이렇게 사용하면 anything that extends 
+  Fruit은 사용할 수 있다. 즉 ?은 anything이다. 
+    a) <? extends T>: class T and all its descendants
+    b) <? super T>: class T and all its ascendants
+    c) <?>: all types
+    
+3. Generic Methods: 지금까지 본것은 class를 generic하게 만든것 이었다. 이젠 특정 method를 generic 하게 만든다. ->return type전에, type variable을 삽입한다. 
+static <T extends Fruit> Juice makeJuice(FruitBox<T> box) 이렇게 return type앞에 Type variable을 작성한다. 
+
+4. Casting Generic Types
+  a)동일한 raw type이지만 다른 paramteterized type사이 에서의 casting은 허용되지 않는다. 
+  b)하지만 wildcard를 사용한 경우 허용된다. 
+  
+  
+  이렇게 보면 wildcard는 하나의 variable을 가지고 동일한 rawtype을 가지고 다른 parameterized type을 할당할때 필요하다. 
+
+5. Erasure of Generic Type
+  compiler은 <T>를 Object로 바꾸고, <T extends Fruit>를 Fruit로 바꾼다. 그 다음에 type casting을 한다. 
+
+    
