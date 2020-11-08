@@ -1,0 +1,17 @@
+이번 시간부터는 Collection Framework에 대해서 다룰 것이다. 
+1. framework: defining and using classes that deal with group of objects
+  a) List: 순서가 있고 데이터의 중복이 가능하다. 
+  b) Set: 순서가 없고 데이터의 중복이 불가능하다. 또한 null element가 있을 수 있다. 
+  c) Map: data는 key, values으로 구성되어있고, duplicate keys는 허용되지만 duplicate values는 허용되지 않는다. 
+  ->모두 interface로 구현되어있다. 
+
+2. Hierarchy of interfaces: List interface와 Set interface은 Collections의 subtype이지만, Map은 다른 interface이다. 
+
+3. Map: Map.Entry는 interface Map안에 있는 inner interface이다. 
+
+4. ArrayList: ArrayList의 constructor에는 세가지가 있는데, empty arraylist를 만드는 두가지 방법과 이번에 새로 알게 된 collections을 parameter로 주는 constructor이다. 예로들면, 
+ArrayList<Integer> list2= new ArrayList<Integer>(list1.sublist(3,4)); 이렇게 하면 list1의 sublist를 list2에 할당한다. 
+또한 list1.retainAll(list2)하면 list1에서 list2가 가진것만 남기고 다 삭제한다. 이런 뜻이다. ArrayList는 크기가 한정되있지 않고 무한히 늘어날 수 있지만 list의 size가 늘어나는 것은 overhead
+이다. 따라서 처음에 constructor로 size를 정해주는 것이 좋다.  
+size: number of elements / capacity: memory space. 
+trimtosize는 capacity를 size로 맞춘다. ensurecapacity(n)은 capacity를 n으로 맞춘다. 
