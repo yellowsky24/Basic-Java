@@ -18,6 +18,8 @@
 3. Generic Methods: 지금까지 본것은 class를 generic하게 만든것 이었다. 이젠 특정 method를 generic 하게 만든다. ->return type전에, type variable을 삽입한다. 
 static <T extends Fruit> Juice makeJuice(FruitBox<T> box) 이렇게 return type앞에 Type variable을 작성한다. 
 
+따라서 앞에서 생겨나 문제, 즉 여러 parameterized type을 동일한 method에서 사용하고 싶다면, wildcard를 return type앞에다 사용한 Generic Method을 사용하거나 parameter에 wildcard를 사용한다. 
+
 4. Casting Generic Types
   a)동일한 raw type이지만 다른 paramteterized type사이 에서의 casting은 허용되지 않는다. 
   b)하지만 wildcard를 사용한 경우 허용된다. 
