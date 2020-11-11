@@ -1,0 +1,46 @@
+1. LinkedList
+  -각 Node는 data를 저장하는 부분과 다음 Node의 주소를 가지고 있다. 
+  -Addition and Deletion: 
+    -Deletion: change the link 또한 해당 node는 신경쓰지 않아도 되는게 Java에서는 Garbage Collector가 있다. ArrayList와 비교했을때 삭제가 용이하다. 
+    -Addition: change the link: ArrayList와 비교했을때 용이하다. 
+  -Types of Linked List: Basic/ Doubly(Traverse할때 용이) / Doubly circular
+2. ArrayList vs LinkedList
+cf) System.currentTimeMillis(): Java에서 현재 시간을 돌려주기에 프로그램의 시간 소요를 측정할때 사용된다. 
+  -add1과 add2가 다른점은, add1은 순차적으로 삽입하고 있고 add2는 non sequential(List의 중간에, 500번지에 ) 삽입하고 이다. 
+  -remove1과 remove2가 다른점은, remove1은 뒤에서부터(back to front) 제가하고 있고, remove2는 앞에서부터(front to back) 제거하고 있다. 
+  
+  이런 함수를 가지고 ArrayList와 LinkedList의 성능을 비교해보자!
+  내 예상: add1:ArrayList > LinkedList add2: ArrayList < LinkedList remove1: ArrayList > LinkedList remove2: ArrayList < LinkedList
+  
+  Programming Lab: add1: ArrayList > LinkedList 이유가 중요하다. 왜냐하면 LinkedList가 마지막 element를 가리키는 포인터를 가지지 않는 이상 ArrayList는 마지막 원소에 대한 address를 
+  가지고 있고 LinkedList는 마지막 원소의 주소를 모르기에 List를 따라가서 마지막 주소를 확인해야 한다. 하지만 대부분 LinkedList이  마지막 원소를 가리키는 포인터를 가지지만 ArrayList보다는
+  할일이 많다. 
+    add2: ArrayList < LinkedList:List의 중간에 삽입하고 있기 때문에 ArrayList해당 element뒤에 있는 원소들은 모두 뒤로 밀어야 한다. 하지만 LinkedList는 단지 link를 바꾸기만 하면 된다.
+    remove2: ArrayList < LinkedList: add2와 같이 앞에 원소를 삭제하면 ArrayList는 맨 앞에 있는 element 뒤에 있는 모든 원소들을 앞으로 당겨야 한다. 
+    remove1: ArrayList > LinkedList: add1와 동일하다. 
+    
+    
+  -access: 내 예상: ArrayList > LinkedList
+    ArrayList는 memory가 계산될 수 있다. 시작 주소와 하나의 블록의 크기말 알면 어떤 임의의 원소의 주소도 알 수 있다. 하지만 LinkedList는 따라가면 주소를 확인한다. 
+  Programming Lab: ArrayList> Linkedlist이다. 왜냐하면, 임의의 element에 대해서 arrayList는 주소를 알고 있지만 LinkedList는 list를 따라가면 해당 element를 확인해야 한다. 
+  
+  
+  
+3. Stack and Queue: entry 와 exit이 정해져있다. 
+  -Stack: LIFO구조, Class로 구현되어 있다. 
+  -Queue: FIFO구조, Interface로 구현되어있다. 
+
+  Programming Lab: 2->1->0/ 0->1->2 가 나온다. 왜냐하면 stack은 LIFO구조 QUeue는 FIFO구조
+4. Using stack: goUrl을 4개를 선언하면 back에 Goolge->Facebook->Naver->Daum이렇게 저장되어있다. forward는 매번 goURL이 call 할수록, clear된다. goBack은 back에서 pop하여 forward로 push
+  하므로 Daum이 Forward에 저장된다. goForward하면 forward에서 pop하여 back에 push한다. 
+
+  Programming Lab: 마치 인터넷에서 앞으로가기, 뒤로가기처럼 구현한 것이다. 각 출력마다 back, forward에 어떤것이 출력되는지 알아보면 좋을것 같다. 
+
+5. Using queue: 사용자가 command를 하면 Queue에 저장하고 history를 치면 모두 출력하는 프로그램이다. 
+  Programming Lab: 오히려 주의할점은 s.close를 어디에다가 할지 꼭 강의를 보자. 혹시 시험에 나올 수 있다. 
+  
+6. Priority Queue: priority Queue는 FIFO, LIFO구조가 아니라 높은 priority를 가진 element를 먼저 삭제한다. 
+  Programming Lab: 여기서는 숫자가 작은게 priority가 높다. 따라서 1이 먼저 출력된다. 
+  
+  
+    
