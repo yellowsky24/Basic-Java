@@ -5,9 +5,11 @@
     b) 따라서 a)번에 의해서 superclass에서 type parameter를 limit하고 있다면, subclass에서 또한 type parameter를 limit해야 한다.
     
 2. Generic classes: wildcard
-  -Parameter가 generic class일때 예로들면 FruitBox<Fruit>일때 actual parameter로 FruitBox<Apple>이 될 수 없다. 이 부분이 어려운게 원래 non generic class에서는 subclass가 actual parameter
-  가 될 수 있는데 generic class에선 아예 type parameter가 동일해야 한다. 
-  -그렇다면 두개의 generic class를 parameter로 하는 예로들면 A(FruitBox<Fruit>)와 A(FruitBox<Apple>)을 만들면 어떨까 생각했지만 이는 compile error이다. 
+  WildCard가 필요한 이유를 이해하는 것이 쉽지는 않다. 
+  -어떤 method의 formal parameter가 FruitBox<Fruit>일때 actual parameter로 FruitBox<Apple>이 될 수 없다. 이 부분이 어려운게 원래 non generic class에서는 subclass가 actual parameter
+  가 될 수 있는데 generic class에선 아예 type parameter까지도 동일해야 한다. 
+  -그렇다면 두개의 generic class를 parameter로 하는 예로들면 A(FruitBox<Fruit>)와 A(FruitBox<Apple>)을 만들면 어떨까 생각했지만 이는 compile error이다. 왜냐하면
+  java는 여기에서는 type parameter를 고려안하고 FruitBox가 같으므로 동일한 parameter라고 생각해서 duplicates라고 생각한다. 
   
   따라서 정리하자면 generic class를 parameter로 사용할때, 여러 type variable을 사용하고 싶을때, wildcard를 사용한다.  ex) <? extends Fruit>-> 이렇게 사용하면 anything that extends 
   Fruit은 사용할 수 있다. 즉 ?은 anything이다. 
@@ -17,13 +19,13 @@
     
 3. Generic Methods: 지금까지 본것은 class를 generic하게 만든것 이었다. 이젠 특정 method를 generic 하게 만든다. ->return type전에, type variable을 삽입한다. 
 static <T extends Fruit> Juice makeJuice(FruitBox<T> box) 이렇게 return type앞에 Type variable을 작성한다. 
+이렇게 되면 해당 method를 여러 type에서 사용할 수 있다. 
 
-따라서 앞에서 생겨나 문제, 즉 여러 parameterized type을 동일한 method에서 사용하고 싶다면, wildcard를 return type앞에다 사용한 Generic Method을 사용하거나 parameter에 wildcard를 사용한다. 
+따라서 앞에서 생겨난 문제, 즉 여러 parameterized type을 동일한 method에서 사용하고 싶다면, wildcard를 return type앞에다 사용한 Generic Method을 사용하거나 parameter에 wildcard를 사용한다. 
 
 4. Casting Generic Types
-  a)동일한 raw type이지만 다른 paramteterized type사이 에서의 casting은 허용되지 않는다. 
+  a)동일한 raw type이지만 다른 paramteterized type사이 에서의 casting은 허용되지 않는다. 따라서 무조건 parameterized type은 동일해야 한다. 
   b)하지만 wildcard를 사용한 경우 허용된다. 
-  
   
   이렇게 보면 wildcard는 하나의 variable을 가지고 동일한 rawtype을 가지고 다른 parameterized type을 할당할때 필요하다. 
 
