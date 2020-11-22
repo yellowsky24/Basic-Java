@@ -12,22 +12,38 @@
   a) Box<T>: Generic Class
   b) T: a type variable
   c) Box: a raw type
-  d) String: a parameterized type
+  d) String: a parameterized type(Generic Class를 사용할때 T를 String으로 Specifiy 할때)
 
 4. Limitations
   a) type variable T를 static으로 선언할 수 없다. 즉, static T item; 이렇게 선언할 수 없다. 왜냐하면 static variable은 여러 instance에서 사용할 수 있으므로 한가지 type으로 한정할 수 없다. 
   b) new를 이용해서 T에 대한 array를 사용할 수 없다. 즉 예로들면, T[] arr= new T[10]; 을 할 수 없다. 하지만 T[] itemlist처럼은 사용할 수 있다. 또한 마찬가지 이유로 instance of 를 사용할 
-  수 없다. 
+  수 없다. 왜냐하면 Compile time때 we need to know what type of T in order to allocate memory. 
   Compile time때 <T>가 제거되고 Object로 바뀐다. 이 Limitations 부분이 잘 이해가지 않는다. 
-
+  
+  
+  *11월 22일 수정
+  a) class Definition안에 T를 static으로 이용할 수 없다. 왜냐하면 많은 instance들이 static variable을 access하는데, 그럴려면 한가지 type로 제한되어야 한다.
+  b) class Definition안과 밖에도 generic array를 사용할 수 없다.  ex) 안: T[] tmpArr = new T[10]; 밖: Box<String>[] bsa = new Box<String>()[3]; 
+  c) class Definition안에 instance를 생성할 수 없다.
+  d) primitive type은 parameterized type으로 불가능하다. ex) Box<int> intBox = new Box<int>(); 
+  
+  근데 ArrayList<T> list= new ArrayList<T>()은 가능하다. 왜인지는 잘 모르겠다..
+  *
 5. Example1
     a) ArrayList<T> list= new ArrayList<T>(); ->이건 가능하다. T a= new T();을 하지 못하지 이건 가능하다.
     b) instance를 생성할때, parameterized type은 constructor의 type과 무조건 동일해야 한다. parameterized type이 super class여도 
-    c) 당연히 superclass variable에 subclass object를 할당할 수 있다. 
+    c) 당연히 superclass variable에 subclass object를 할당할 수 있다. 그니깐 raw type에서의 subclass는 괜찮다. 만약에 parameterized type이 동일하다면. 
+       ->생각하기 쉽게 parameterized type만 동일하다면 subclass를 할당할 수 있다. 
+       
+       
 6. Limiting Types: 
 그냥 놔두면 당연히 Object에 아래에 있는 모든 클래스 들이 들어갈 수 있다. 하지만 우리는 그것은 원하지 않는다. 즉, <T>에 들어갈 수 있는 parameterized variable을 제한한다. 
 <T extends Fruit>처럼 사용하면 Fruit의 subclass에 있는 class들만 parameterized variable이 될 수 있다. 또한 우리는 특정한 interface 를 implements한 classem들만 <T>에 들어갈 수 있게 한다. 
 <T extends interfaces>처럼 사용하면 interfaces를 class들만 parameterized variable이 될 수 있다. 여기서 중요한 것은 implements가 아니라 extends이다. 
+
+7. Example 2
+    a) Fruit Box는 아무것도 구현하지 않았지만 Box<T>를 extends하므로 Box<T>에 구현된 method를 상속받고 T가 Fruit와 Eatable를 extends하므로 오로지 Fruit와 
+    Eatable를 상속받고 구현한 class만 FruitBox의 parameterized type이 된다. 
 
     
     
