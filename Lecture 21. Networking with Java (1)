@@ -1,0 +1,51 @@
+1. Background
+  - Client-Server: one Server<->Many Clients
+  - Peer to Peer: 각 device는 client와 동시에 server가 될 수 있다. 
+  - IP Address: private IP Address/ public IP Address. private network를 위한 ip address가 있는데 이를 private ip address라고 부른다. private network안에 있는 device가 private network
+  밖에 있는 device와 communicate하고 싶다면 NAT과정을 거쳐야 한다.
+  예로 들어, wifi point가 있다면 wifi 와 연결된 device들은 private ip address를 가진다. 그리고 wifi point는 하나의 public ip address를 가진다. 그리고 만약에 device가 예로들면, google에 
+  접속하고 싶다면 wifi의 public ip address를 이용하여 google에 접속하고 googel은 데이터를 보낼때 wifi로 보내고 wifi는 어떤 device가 보냈는지 확인하여 해당 device에게 데이터를 넘겨준다. 
+  
+  -Host name: device에 할당된 label/ domain name: naver.com/ google .com처럼 network domain임.
+  -Internet Host name: ex) www. sogang.ac.kr www: host name, sogang.ac.kr: domain name
+  -Fully Qualified Domain name: ex) en wikipedia.org
+  
+  -Name Server: DNS Server얘기 하는듯, domain을 치면 ip address를 알려주는 server. 
+  -Port Number도 필요하다.  port number: 16 bit integer. service를 distinguish 하는데 사용한다. 따라서 하나의 device안에서 service를 구분할때 사용한다. 
+  
+2. InetAddress: class for handling IP address  
+  getByName: retrieves IP address of the given domain name: domain name이 주어지면 이를 ip address를 얻어온다. 그러니깐 dns한테 물어본다. 
+  getHostName: hostname을 돌려준다.
+  getHostAddress: IP address를 돌려준다. 
+  getAddress: ipaddress를 byte array로 돌려준다. 주의할점은 byte 가 signed type이기에 byte array에 저장된 값은 -128부터 127이다. 따라서 이를 0부터 255로 고쳐야 한다. 
+  getLocalHost: domain name이 없을시 locally assigned host name이 return된다. 
+  getAllByName: domain에 할당된 모든 ip address를 할당 받는다.  
+ 
+3. URL구성요소 알아야 할것 같다. 단지 느낌이...
+  
+4. class URL
+
+
+<Programming Lab#1>
+inetAddress는 IP address이다. 
+- getByName은 InetAddress의 static method으로 parameter hostname의 ip address를 리턴한다. 
+- getHostName은 IP address에 해당하는 hostname를 돌려준다. 
+- getHostAddress은 IP address를 textual presentation형으로 돌려준다. 
+
+getAllHostName은 해당하는 모든 ip address를 받기 때문에 ip address의 배열을 리턴받아야 한다. 
+
+<Programming Lab#2>
+getAddress()는 signed byte array를 return하기 때문에 음수이면 256를 더한다. 256을 더한 이유는 Lab2에서도 보았듯이 128은 -128로 출력된다. 따라서 256을 더하면 원래 우리가 원하는 양수가 
+된다. 따라서 이렇게 더해서 출력하면 결과는 getHostAddress()와 동일하다. 하지만 getHostAddress는 string이지만 getAddress는 배열이기에 만약에 8bits씩 연산이 필요하면 getAddress를 사용
+한다. 
+
+<Programming Lab#3>
+getLocalHost는 현재 수행하고 있는 local host를 의미한다. 여기서 중요한 점은 private address가 출력된다. 
+
+<Programming Lab#4>
+세가지 exception handling이 필요하다. 
+mickeymouse가 userinfo이다. 
+file: path+query-> path=/results query: search_query=java
+https이므로 포트번호가 달라지고 ref :Syntax이다. 
+
+
