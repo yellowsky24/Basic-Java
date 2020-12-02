@@ -1,0 +1,60 @@
+1. Background
+  - THread: process 안에 있는 최소 수행 단위이다. 
+  - multi-tasking은 메모리에 여러 프로세스가 있어서 이를 동시에 수행하는 것이고 multi threading은 하나의 process안에 있는 thread를 동시에 수행하는 것이다. 
+  - 장점: Efficient use of resources: 하나의 process안에서 어떤 thread는 파일을 읽고 어떤 thread는 message를 send한다. 이는 서로의 자원을 사용하지 않으므로 자원을 효율적으로 사용한다. 
+          Fast Response to Users: server가 multi thread로 구현될경우 빠르게 유저와 소통할 수 있다. 
+          Improved Modularity of codes by separating tasks to threads: 서버안의 각 기능을 분리하여 이를 thread에 할당한다.         
+  - 단점: pgr가 synchronization, deadlock, inefficiency(어떤 thread는 idle하고 어떤 thread는 열심히 일하고) 이러한 문제를 해결하기 위해서 더 노력이 필요하다. 
+  
+2. Implementing threads in Java
+  -thread를 생성하고 실행하기 위해서 thread 클래스를 extends하거나 Runnable interface를 구현해야 한다. 
+  -Java는 multiple inheritance가 안되므로 다른 class를 상속할 경우 thread 클래스를 상속할 수 없으므로 이럴때는 RUnnable interface를 사용한다. 
+  -Runnable interface는 반드시 run method를 구현해야 하고 Thread class는 반드시 run method를 overriding해야 한다. 이 run이 entry point method이다. entry point는 해당 thread에서 가장
+  먼저 수행되는 코드이며 일반 코드에서는 main과 같다. 
+  
+3. Implementing threads in Java: Example
+  -Runnable와 Thread 클래스에서 thread를 생성하는 방법이 다르다. 일단 Thread 클래스를 상속한 클래스의 constructor를 호출하면 thread가 생성된다. 하지만 Runnable interface를 구현한 클래스는
+  instance변수를 생성해서 이를 Thread 클래스의 constructor의 argument로 대입하여 생성한다. 
+  -또 하나 다른점은 Thread를 구현한 클래스는 자신의 클래스 안에서 해당 thread의 이름을 얻을때 그냥 getName()을 호출하지만 Runnable 인터페이스는 Thread.currentThread().getName()이렇게 사용
+  하여야 한다. 따라서 Runnable은 현재 Thread를 나타내기 위해서 Thread.currentThread를 적어야 한다. 
+  
+  -Thread는 start 메소드가 호출되면 시작한다. start가 호출되면 thread는 scheduler안으로 들어가서 scheduler가 dispatch해주기를 기다린다. dispatch하면 그제서야 cpu에서 수행된다. 
+  -동일한 thread를 여러번 숳애하면 exception이 발생한다. 
+  -현재 코드에서는 세개의 thread가 수행중이다. maint thread, t1, t2 따라서 만약에 4개의 core(quad core) 를 사용한다면, 이 세개의 thread를 3개의 core에서 동시에 수행할 수 있다. 
+  
+4. THreads: start and run
+  -앞에서 말했듯이 run은 thread에서 entry point이므로 굳이 앞에서 start를 수행하는 대신에, run을 수행하면 안될까? 왜냐하면 어짜피 run부터 thread의 코드가 시작하니깐..
+  -run을 수행하는 것이 가능하지만 이는 새로운 thread를 생성하는 것이 아니다. 왜냐하면 main에서 run을 수행하면 stack을 보면 main위에 run이 올려진 것을 볼 수 있다. 따라서 run이 수행되고 나면
+  다시 main으로 돌아온다. 
+  -하지만 start를 수행하면 새로운 stack을 생성한다. 따라서 새로운 stack에 run method가 추가된다. 그리고 start의 수행은 새로운 스택을 만들고 run을 새로운 스택에 삽입하는 것이므로 start은
+  종료되지만 run이 있는 stack은 없어지지 않는다. 왜냐하면 start는 main이 있는 stack에 있기 때문이다. 
+  
+  이렇게 두개의 thread가 생기면 computer가 두개의 core가 있다면 이를 동시에 수행하고 single core있다면, scheduler가 두개의 thread중에서 누굴 수행할지 정한다. 
+  -thread가 동시에 수행되므로 어떤 thread가 먼저 종료될지 모른다. 따라서 main thread가 먼저 종료되어도 해당 stack은 destroyed되지만 run이 아직 수행이 끝나지 않으면 프로그램은 run이 
+  끝날때까지 수행된다. 따라서 program은 모든 thread가 종료되면 끝난다. 
+  
+5. Single Thread vs Multiple Thread
+  -Task A, B가 있다고 가정하면 single thread은 Sequential하게 수행한다. 즉 A가 끝나고 B를 수행한다. 하지만 Multiple thread 환경에선 두가지로 나뉜다. 첫번째는, only one CPU Core인 경우와
+  여러개의 Core을 가진 경우로 구분해야 한다. Single core인 경우 Scheduler에 의해서 번갈아 수행되므로 A와 B가 동시에 수행되는 것처럼 보이지만 사실상 Single thread와 동일하다. 
+  하지만 multiple cord인 경우에 이 두개의 thread는 병렬적으로 수행할 수 있다. 
+  
+6. Benefits of Multithreading: Task A은 Entry any String이 표시되고 사용자가 string을 입려하는 것을 기다리고 이를 표시한다. Task B는 10을 출력하고 1초 쉬고 9를 출력하고 1초 쉬는 이런
+방식이다.
+  -만약에 single thread이면 Task A가 수행된 뒤에 Task B가 수행되므로 사용자의 입력을 기다리는 시간과 B에서 1초 쉬는 동안에 cpu는 아무런 작업을 하지 않는다. 하지만 multi thread인 경우에 
+  이렇게 cpu가 쉬는 동안에 scheduler가 다른 thread를 할당한다. 
+  
+<Programming Lab#1>
+thread의 순서가 다르다. 어떻게 thread가 수행될지는 모른다. 
+
+<Programming Lab#2>
+start과 run에서의 stack의 차이를 보는 것인데, run으로 수행하면 main이 stack에 있는 것을 볼 수 있지만 start로 수행하면, stack에 없는 것을 알 수 있다. 
+<Programming Lab#3, 4>
+lab3은 single thread이고 lab4는 multiple thread이다. 하지만 결과를 보면 single thread가 더 빠른 것을 볼 수 있다. 따라서 300대신 더 숫자를 크게 만들어야 한다. 하지만 숫자를 크게 만들어도
+차이가 발생하지 않는다. 이렇게 multiple thread인데 차이가 발생하지 않은 이유는 두 task가 동일한 자원을 공유하기 때문이다. 두 task모두 화면에 출력하는 작업을 수행하므로 multi thread의
+효과를 누릴수 없다. 따라서 출력하는 것이 아니라 그냥 object를 생성하는 작업이라면, elpased time 2를 비교했을때 차이가 발생하는 것을 볼 수 있다. 
+
+<Programming Lab#5,6>
+서로 resource를 share하지 않은 task에 대해서 multiple thread의 benefits를 다루었다. 
+
+
+  
