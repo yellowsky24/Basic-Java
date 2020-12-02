@@ -2,7 +2,7 @@
 1. framework: defining and using classes that deal with group of objects
   a) List: 순서가 있고 데이터의 중복이 가능하다. 
   b) Set: 순서가 없고 데이터의 중복이 불가능하다. 또한 null element가 있을 수 있다. 
-  c) Map: data는 key, values으로 구성되어있고, duplicate keys는 허용되지만 duplicate values는 허용되지 않는다. 
+  c) Map: data는 key, values으로 구성되어있고, duplicate values는 허용되지만 duplicate keys는 허용되지 않는다. 
   ->모두 interface로 구현되어있다. 
 
 2. Hierarchy of interfaces: List interface와 Set interface은 Collections의 subtype이지만, Map은 다른 interface이다. 
