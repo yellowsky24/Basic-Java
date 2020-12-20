@@ -1,0 +1,38 @@
+Background: TCP and UDP
+  TCP: Socket. ServerSocket
+  UDP: DatagramSocket, DatagramPacket, MulticastSocket->b/c multicast and broadcast applications
+
+TCP Socket Programming:  다음 과정을 거친다. 
+ 1. The Server uses ServerSocket to listen on a port and wait for connection requests from clients
+   ->서버가 해당 포트에서 요청을 기다리고 있다. 
+ 2. The Client creates a socket using Server's Ip address and port number and make a connection request to the server
+   ->고객이 서버의 IP address와 port number을 이용해 서버에 접근한다.
+ 3. When the ServerSocket receives a client connection request, it creates a new Socket for the client and establish connection between
+ the new Socket and the client Socket.
+   ->Sever가 client의 요청을 받으면 socket을 생성하고 새롭게 생성된 socket과 client의 socket을 연결한다. 
+ 4. Now, a connection is established and the two sockets are ready to send data in both ways. 
+   
+TCP Socket Programming: Socket and ServerSocket
+ Class Socket: Manages communication between two processes 또한 중요한점은 InputStream, OutputStream이 있어서 한쪽이 OutputStream으로 데이터를
+ 보내면 InputStream에서 데이터를 받는다.
+ class SeverSocket
+
+Server
+ serverSocket serverSocket=new ServerSocket(888)-> 이렇게 포트번호를 constructor의 parameter로 넘겨서 serverSocket을 생성한다. 
+ Socket socket = serverSocket.accept()을 이용하여 serverSocket은 client의 request가 올때까지 block된다.  
+ OutputStream out= socket.getOutputStream()
+ DataOutputStream dos= new DataOutputStream(out): 
+
+Client
+ Socket socket= new Socket(serverIp, 7777): SeverIp는 ip를 나타내는 String이고 7777는 port number이다. 이렇게 Socket을  생성하면 알아서 
+ connection을 요청ㅎ한다. 따라서 위의 과정에서 2번까지 힌거다. 
+ readUTF로 데이터를 읽는다.
+
+TCP Sever using threads
+  To Serve multiple clients, the server creates multiple threads. 따라서 Runnable을 implements한다. 
+  threadArr= new Thread[num]이 num은 main에서 넘겨 주었다. 그리고 threadArr[i].start()를 한다. 
+  그럼 이제 run을 봐야 하는데, 제일 처음 accept method를 수행한다. accept는 앞에서도 다뤘듯이 client의 요청이 오기 전까지 멈춘다. 따라서 5개의 
+  thread가 여기서 멈추었고 한개의 client가 요청을 하면 5개중 한개가 수행이 된다. 이는 다중의 사용자와 소통이 가능하다. 
+ 
+ Chat Program using TCP Sockets
+   Sender에서 getinetAddres()은 Server의 IP address을 의미하고 만약에 자신의 IP Address를 얻고 싶으면 getLocalAddress()를 의미한다. 
